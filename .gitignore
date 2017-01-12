@@ -22,3 +22,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# Certificate files
+*.pem
+*.srl
+
+client_env.yml
+server_env.yml
