@@ -1,12 +1,19 @@
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
+	"io"
 	"net/http"
 	// "encoding/json"
-	"os"
 	"log"
+	"os"
+
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/client"
 )
 
 type sketchRequestHandler func(http.ResponseWriter, *http.Request) (int, error)
@@ -20,17 +27,36 @@ func (fn sketchRequestHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 
 func (sketches *senseBoxSketchesServer) requestHandler(w http.ResponseWriter, req *http.Request) (int, error) {
 	LogInfo("requestHandler", "incoming request")
-	// decoder := json.NewDecoder(req.Body)
-	// var parsedRequests []SketchRequest
-	// err := decoder.Decode(&parsedRequests)
-	// if err != nil {
-	// 	LogInfo("requestHandler", "Error decoding JSON payload: ", err)
-	// 	return http.StatusBadRequest, err
-	// }
+
+	cli, err := client.NewEnvClient()
+	if err != nil {
+		panic(err)
+	}
+
+	reader, imagePullErr := cli.ImagePull(context.Background(), "abiosoft/caddy", types.ImagePullOptions{})
+	if imagePullErr != nil {
+		panic(imagePullErr)
+	}
+
+	_, err = io.Copy(os.Stdout, reader)
+	if err != nil {
+		panic(err)
+	}
+	reader.Close()
+
+	_, containerCreateErr := cli.ContainerCreate(context.Background(), &container.Config{Image: "abiosoft/caddy"}, nil, nil, "sketches")
+	if containerCreateErr != nil {
+		panic(containerCreateErr)
+	}
+
+	containerStartErr := cli.ContainerStart(context.Background(), "sketches", types.ContainerStartOptions{})
+	if containerStartErr != nil {
+		panic(containerStartErr)
+	}
+	fmt.Println("Container started")
 
 	return http.StatusOK, nil
 }
-
 
 func (sketches *senseBoxSketchesServer) StartHTTPSServer() {
 	LogInfo("StartHTTPSServer", "senseBox Sketches startup")
@@ -49,11 +75,11 @@ func (sketches *senseBoxSketchesServer) StartHTTPSServer() {
 	LogInfo("StartHTTPSServer", "imported server cert")
 
 	tlsConfig := &tls.Config{
-		ClientAuth:					tls.RequireAndVerifyClientCert,
-		ClientCAs:					clientCertPool,
-		PreferServerCipherSuites:	true,
-		MinVersion:					tls.VersionTLS12,
-		Certificates:				[]tls.Certificate{myServerCertificate},
+		ClientAuth:               tls.RequireAndVerifyClientCert,
+		ClientCAs:                clientCertPool,
+		PreferServerCipherSuites: true,
+		MinVersion:               tls.VersionTLS12,
+		Certificates:             []tls.Certificate{myServerCertificate},
 	}
 
 	tlsConfig.BuildNameToCertificate()
@@ -64,8 +90,8 @@ func (sketches *senseBoxSketchesServer) StartHTTPSServer() {
 	http.Handle("/", sketchRequestHandler(sketches.requestHandler))
 
 	httpServer := &http.Server{
-		Addr:		"0.0.0.0:3924",
-		TLSConfig:	tlsConfig,
+		Addr:      "0.0.0.0:3924",
+		TLSConfig: tlsConfig,
 	}
 	LogInfo("StartHTTPSServer", "configured server")
 

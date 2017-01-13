@@ -27,5 +27,7 @@ _testmain.go
 *.pem
 *.srl
 
+.vscode
+
 client_env.yml
 server_env.yml
