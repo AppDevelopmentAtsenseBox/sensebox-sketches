@@ -1,14 +1,14 @@
 package main
 
-import (
-	"github.com/honeybadger-io/honeybadger-go"
-)
+// import (
+// 	"github.com/honeybadger-io/honeybadger-go"
+// )
 
-type senseBoxSketchesServer struct {}
+type senseBoxSketchesServer struct{}
 
-func main () {
+func main() {
 
-	defer honeybadger.Monitor()
+	// defer honeybadger.Monitor()
 
 	initConfigFromEnv()
 

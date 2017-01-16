@@ -2,6 +2,7 @@ FROM golang:1.7-alpine
 
 RUN apk add --update git
 RUN go get github.com/honeybadger-io/honeybadger-go
+RUN go get github.com/fsouza/go-dockerclient
 
 COPY . /sensebox-sketches
 
