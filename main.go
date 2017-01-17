@@ -12,6 +12,8 @@ func main() {
 
 	initConfigFromEnv()
 
+	initContainer()
+
 	sketches := senseBoxSketchesServer{}
 	sketches.StartHTTPSServer()
 }
