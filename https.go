@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -29,7 +30,16 @@ func (sketches *senseBoxSketchesServer) requestHandler(w http.ResponseWriter, re
 		return http.StatusBadRequest, err
 	}
 
-	startContainer()
+	for _, request := range parsedRequest {
+		// execute the template
+		s, err := generateSketchFromTemplate(request.NetworkType, request.Payload)
+		if err != nil {
+			return 0, err
+		}
+		fmt.Println(s)
+	}
+
+	// startContainer()
 
 	return http.StatusOK, nil
 }

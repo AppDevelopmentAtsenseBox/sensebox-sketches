@@ -12,7 +12,7 @@ var client *docker.Client
 var container *docker.Container
 var hostConfig *docker.HostConfig
 
-/*
+/* Payload that is send by the request.
 {
   "payload": {
     "box": {
@@ -29,7 +29,6 @@ var hostConfig *docker.HostConfig
   },
 }
 */
-
 type SketchRequest struct {
 	NetworkType string                 `json:"networktype"`
 	Payload     map[string]interface{} `json:"payload"`

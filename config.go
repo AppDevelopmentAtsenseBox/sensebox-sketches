@@ -4,12 +4,15 @@ import (
 	// "encoding/json"
 	"fmt"
 	"os"
+
 	"github.com/honeybadger-io/honeybadger-go"
 )
 
 const envPrefix = "SENSEBOX_SKETCHES_"
 
 var ConfigCaCertBytes, ConfigServerCertBytes, ConfigServerKeyBytes []byte
+
+// var DockerImage, ContainerName string
 
 func initConfigFromEnv() {
 	errors := make([]error, 0)
