@@ -39,7 +39,7 @@ func (sketches *senseBoxSketchesServer) requestHandler(w http.ResponseWriter, re
 		fmt.Println(s)
 	}
 
-	// startContainer()
+	startContainer()
 
 	return http.StatusOK, nil
 }

@@ -5,12 +5,16 @@ import (
 	"log"
 	"os"
 
+	"strings"
+
 	"github.com/fsouza/go-dockerclient"
 )
 
 var client *docker.Client
-var container *docker.Container
+var containerID string
 var hostConfig *docker.HostConfig
+
+const repository = "mpfeil/docker-frab"
 
 /* Payload that is send by the request.
 {
@@ -43,11 +47,45 @@ func initContainer() {
 	LogInfo("Sketches - InitContainer", "Client created")
 	client = cli
 
-	pullImageErr := client.PullImage(docker.PullImageOptions{Repository: "mpfeil/docker-frab"}, docker.AuthConfiguration{})
-	if pullImageErr != nil {
-		panic(pullImageErr)
+	// Check Images
+	images, listImagesErr := client.ListImages(docker.ListImagesOptions{})
+	if listImagesErr != nil {
+		panic(listImagesErr)
 	}
-	LogInfo("Sketches - InitContainer", "Image pulled")
+
+	var imageExists bool
+	for _, element := range images {
+		for _, elem := range element.RepoTags {
+			if strings.HasPrefix(elem, repository) {
+				imageExists = true
+				LogInfo("Sketches - InitContainer", "Image already exists!")
+			}
+		}
+	}
+
+	if !imageExists {
+		LogInfo("Sketches - InitContainer", "Image not exisitng. Imgage pulling...")
+		pullImageErr := client.PullImage(docker.PullImageOptions{Repository: "mpfeil/docker-frab"}, docker.AuthConfiguration{})
+		if pullImageErr != nil {
+			panic(pullImageErr)
+		}
+		LogInfo("Sketches - InitContainer", "Image pulled")
+	}
+
+	// Check Containers
+	containers, listContainersError := client.ListContainers(docker.ListContainersOptions{All: true})
+	if listContainersError != nil {
+		panic(listContainersError)
+	}
+
+	var containerExists bool
+	for _, container := range containers {
+		if container.Image == repository {
+			containerExists = true
+			containerID = container.ID
+			LogInfo("Sketches - InitContainer", "Container already exists!")
+		}
+	}
 
 	createContConf := docker.Config{
 		// ExposedPorts: exposedCadvPort,
@@ -72,19 +110,32 @@ func initContainer() {
 		HostConfig: &createContHostConfig,
 	}
 
-	cont, createContainerErr := client.CreateContainer(createContOps)
-	if createContainerErr != nil {
-		log.Fatalln("Container was not created: ")
-		os.Exit(1)
-	}
+	if !containerExists {
+		LogInfo("Sketches - InitContainer", "Container does not exists. New Container is creating...")
 
-	container = cont
+		cont, createContainerErr := client.CreateContainer(createContOps)
+		if createContainerErr != nil {
+			log.Fatalln("Container was not created: ")
+			os.Exit(1)
+		}
+		LogInfo("Sketches - InitContainer", "Container is created!")
+
+		containerID = cont.ID
+	}
 }
 
 func startContainer() {
-	startContainerErr := client.StartContainer(container.ID, hostConfig)
+	startContainerErr := client.StartContainer(containerID, hostConfig)
 	if startContainerErr != nil {
 		fmt.Printf("start error = %s\n", startContainerErr)
 	}
-	fmt.Printf("start = %s\n", startContainerErr)
+	LogInfo("Sketches - StartContainer", "Container started!")
+}
+
+func stopContainer() {
+	stopContainerErr := client.StopContainer(containerID, 5000)
+	if stopContainerErr != nil {
+		panic(stopContainerErr)
+	}
+	LogInfo("Sketches - StopContainer", "Container stopped!")
 }
