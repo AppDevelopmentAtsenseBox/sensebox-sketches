@@ -16,11 +16,11 @@
 #include <Ethernet.h>
 
 //senseBox ID
-#define SENSEBOX_ID {{ .box._id }}
+#define SENSEBOX_ID {{ .BoxID }}
 
-//Sensor IDs 
-{{ range .box.sensors }}
-{{ ._id }}{{ end }}
+//Sensor IDs
+{{range .Sensors}}{{.Define}}
+{{end}}
 
 //Configure ethernet connection
 IPAddress myIp(192, 168, 0, 42);

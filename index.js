@@ -19,76 +19,85 @@ var req = https.request(options, function(res) {
 
 var payload = [
 {
-  "networktype": "ethernet",
-  "payload": {
-    "box": {
-      "_id": "57000b8745fd40c8196ad04c",
-      "sensors": [{
-        "_id": "57000b8745fd40c8196ad04e",
-        "lastMeasurement": {
-          "value": "80",
-          "createdAt": "2017-01-19T09:15:39.901Z"
-        },
-        "sensorType": "VEML6070",
-        "title": "UV-Intensität",
-        "unit": "μW/cm²"
-      }, {
-        "_id": "57000b8745fd40c8196ad04f",
-        "lastMeasurement": {
-          "value": "2456",
-          "createdAt": "2017-01-19T09:15:39.901Z"
-        },
-        "sensorType": "TSL45315",
-        "title": "Beleuchtungsstärke",
-        "unit": "lx"
-      }, {
-        "_id": "57000b8745fd40c8196ad050",
-        "lastMeasurement": {
-          "value": "1032.03",
-          "createdAt": "2017-01-19T09:15:39.901Z"
-        },
-        "sensorType": "BMP280",
-        "title": "Luftdruck",
-        "unit": "hPa"
-      }, {
-        "_id": "57000b8745fd40c8196ad051",
-        "lastMeasurement": {
-          "value": "93.99",
-          "createdAt": "2017-01-19T09:15:39.901Z"
-        },
-        "sensorType": "HDC1008",
-        "title": "rel. Luftfeuchte",
-        "unit": "%"
-      }, {
-        "_id": "57000b8745fd40c8196ad052",
-        "lastMeasurement": {
-          "value": "-1.62",
-          "createdAt": "2017-01-19T09:15:39.901Z"
-        },
-        "sensorType": "HDC1008",
+  "box": {
+    "_id": "58233fe540198a00100b5792",
+    "createdAt": "2016-11-09T15:25:25.160Z",
+    "updatedAt": "2017-01-23T14:01:42.849Z",
+    "name": "Marientalstraße",
+    "boxType": "fixed",
+    "grouptag": "",
+    "exposure": "outdoor",
+    "model": "homeEthernet",
+    "sensors": [
+      {
         "title": "Temperatur",
-        "unit": "°C"
-      }, {
-        "_id": "576996be6c521810002479dd",
-        "sensorType": "WiFi",
-        "unit": "dBm",
-        "title": "Wifi-Stärke",
+        "unit": "°C",
+        "sensorType": "HDC1008",
+        "icon": "osem-thermometer",
+        "_id": "58233fe540198a00100b5797",
         "lastMeasurement": {
-          "value": "-72",
-          "createdAt": "2017-01-19T09:15:39.901Z"
+          "value": "1.52",
+          "createdAt": "2017-01-23T14:01:37.903Z"
         }
-      }, {
-        "_id": "579f9eae68b4a2120069edc8",
-        "sensorType": "VCC",
-        "unit": "V",
-        "title": "Eingangsspannung",
+      },
+      {
+        "title": "rel. Luftfeuchte",
+        "unit": "%",
+        "sensorType": "HDC1008",
+        "icon": "osem-humidity",
+        "_id": "58233fe540198a00100b5796",
         "lastMeasurement": {
-          "value": "2.73",
-          "createdAt": "2017-01-19T09:15:39.901Z"
+          "value": "82.5",
+          "createdAt": "2017-01-23T14:01:39.133Z"
+        }
+      },
+      {
+        "title": "Luftdruck",
+        "unit": "hPa",
+        "sensorType": "BMP280",
+        "icon": "osem-barometer",
+        "_id": "58233fe540198a00100b5795",
+        "lastMeasurement": {
+          "value": "1019.28",
+          "createdAt": "2017-01-23T14:01:40.370Z"
+        }
+      },
+      {
+        "title": "Beleuchtungsstärke",
+        "unit": "lx",
+        "sensorType": "TSL45315",
+        "icon": "osem-brightness",
+        "_id": "58233fe540198a00100b5794",
+        "lastMeasurement": {
+          "value": "2068",
+          "createdAt": "2017-01-23T14:01:41.602Z"
+        }
+      },
+      {
+        "title": "UV-Intensität",
+        "unit": "μW/cm²",
+        "sensorType": "VEML6070",
+        "icon": "osem-brightness",
+        "_id": "58233fe540198a00100b5793",
+        "lastMeasurement": {
+          "value": "90",
+          "createdAt": "2017-01-23T14:01:42.847Z"
+        }
+      }
+    ],
+    "loc": [
+      {
+        "geometry": {
+          "coordinates": [
+            7.614847,
+            51.972261
+          ],
+          "type": "Point"
         },
-        "icon": "osem-shock"
-      }]
-    }
+        "type": "feature"
+      }
+    ],
+    "image": "58233fe540198a00100b5792.jpg?1478874872593"
   }
 }]
 

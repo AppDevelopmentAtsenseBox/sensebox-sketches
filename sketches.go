@@ -18,24 +18,36 @@ const repository = "mpfeil/docker-frab"
 
 /* Payload that is send by the request.
 {
-  "payload": {
     "box": {
-      "id": "<some valid senseBox id>",
-      "sensors": [
+        "id": "<some valid senseBox id>",
+        "sensors": [
         {
-          "title": "<some title>",
-          "type": "<some type>",
-          "id": "<some valid senseBox sensor id>"
+            "title": "<some title>",
+            "type": "<some type>",
+            "id": "<some valid senseBox sensor id>"
         },
         ...
-      ]
+        ]
     }
-  },
 }
 */
 type SketchRequest struct {
-	NetworkType string                 `json:"networktype"`
-	Payload     map[string]interface{} `json:"payload"`
+	Box Box `json:"box"`
+}
+
+/**/
+type Box struct {
+	ID      string   `json:"_id"`
+	Sensors []Sensor `json:"sensors"`
+	Model   string   `json:"model"`
+}
+
+/**/
+type Sensor struct {
+	Title      string `json:"title"`
+	Type       string `json:"type"`
+	ID         string `json:"_id"`
+	SensorType string `json:"sensorType"`
 }
 
 func initContainer() {

@@ -30,9 +30,11 @@ func (sketches *senseBoxSketchesServer) requestHandler(w http.ResponseWriter, re
 		return http.StatusBadRequest, err
 	}
 
+	fmt.Println(parsedRequest)
+
 	for _, request := range parsedRequest {
 		// execute the template
-		s, err := generateSketchFromTemplate(request.NetworkType, request.Payload)
+		s, err := generateSketchFromTemplate(request.Box)
 		if err != nil {
 			return 0, err
 		}
