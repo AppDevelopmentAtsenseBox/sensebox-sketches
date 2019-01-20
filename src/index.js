@@ -19,7 +19,7 @@ const defaultHeaders = {
 
 const preflight = function preflight (req, res, next) {
   // preflight POST request https://gist.github.com/balupton/3696140
-  res.setHeader('Access-Control-Allow-Origin', 'https://blockly.sensebox.de');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Request-Method', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST');
   res.setHeader('Access-Control-Allow-Headers', 'content-type');
